@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Euler28
 {
@@ -12,20 +8,22 @@ namespace Euler28
 
         static void Main(string[] args)
         {
+            int SIZE = 1001;
             
-            int[,] grid = new int[1001, 1001];
+            int[,] grid = new int[SIZE, SIZE];
 
+            int center = (SIZE - 1) / 2;
+
+            grid[center, center] = 1;
+            int n = 2;
+            int row = center;
+            int col = center + 1;
             Direction d = Direction.DOWN;
 
-            grid[500, 500] = 1;
-            int i = 2;
-            int row = 500;
-            int col = 501;
-
-            while(!(row == 0 && col == 1000))
+            while (!(row == 0 && col == SIZE - 1))
             {
-                grid[row, col] = i;
-                i++;
+                grid[row, col] = n;
+                n++;
                 if(d == Direction.DOWN)
                 {
                     if(grid[row + 1, col - 1] == 0)
@@ -62,31 +60,20 @@ namespace Euler28
                     continue;
                 }
             }
-            grid[row, col] = 1001 * 1001;
+            grid[row, col] = SIZE * SIZE;
 
             int sum = 0;
+            int i = 0;
 
-            int r = 0;
-            int c = 0;
-
-            while (r <= 1000)
+            while (i < SIZE)
             {
-                sum += grid[r, c];
-                r++;
-                c++;
+                sum += grid[i, i];
+                sum += grid[i, SIZE - i - 1];
+                i++;
             }
 
-            r = 0;
-            c = 1000;
-
-            while (r <= 1000)
-            {
-                sum += grid[r, c];
-                r++;
-                c--;
-            }
-
-            sum -= grid[500, 500];
+            //substract center value to avoid double count
+            sum -= grid[center, center];
 
             Console.WriteLine(sum);
             Console.ReadLine();
